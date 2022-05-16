@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
+from matplotlib.animation import FuncAnimation
+
 
 
 def build_tridiag_matrix(n, D, dt=1, dx=1):
@@ -50,14 +52,19 @@ def thomas_algorithm(n, a, b, c, C_old):
     return C_new[:]
 
 
-t = 200000 # timesteps    
+
+
+t = 2000000 # timesteps
+
 n = 10
 D = 10**(-6)
 #T = build_tridiag_matrix(n, D)
 a,b,c = build_tridiag(n,D,dt=1, dx = 0.02)
 b[-1] = 2 * b[-1] # neumann B.C.
 
+
 C = np.zeros((n,t))
+
 C[0,:] = 1
 
 
@@ -67,8 +74,22 @@ for _t in tqdm(range(1,t)):
     C[0,_t] = 1
 
 #np.delete(C, slice(None, None, 100000))
-ax = sns.heatmap(C,cmap="YlGnBu")
+
+#%%
+ax = sns.heatmap(C[:,:2000], cmap = 'Greens')
 
 # %%
 
+fig = plt.figure()
+sns.heatmap(C[:,0], cmap = 'Greens')
+
+def init():
+    sns.heatmap(C[:,0])
+
+def animate(i):
+    sns.heatmap(C[:,i], cbar=False)
+
+anim = FuncAnimation(fig, animate, init_func=init, frames=20, repeat=False)
+
+plt.show()
 # %%
