@@ -24,7 +24,6 @@ for j in range(0,N):
         print ("done C at" + "[" + str(j) + ","+ str(i) + "]" )
         
    
-print (C[0,-1])
 
 ## Plot
 from matplotlib import pyplot as plt
@@ -51,5 +50,3 @@ anim = FuncAnimation(fig, animate, init_func=init,
                                frames=N, interval=10, blit=True)
 
 anim.save('C_analytic_diffusion.gif')
-
-print (C)
