@@ -51,10 +51,22 @@ Co = U*delta_t /delta_x
 # Iteration
 for j in range(0,N-1):
     for i in range (1, len(x)):
+        # Square impuls
+        # Periodic domain
+        if C_SqP[j,-1] > 0.001:             # Set a threshold value
+            C_SqP[j+1,0] = C_SqP[j,-1]
+        # New value
         C_SqP[j+1,i] = C_SqP[j,i] * (1-Co) + Co * C_SqP[j,i-1]
+        
+        # Gaussian
+        # Periodic domain
+        if C_Gauss[j,-1] > 0.001:           # Set a threshold value
+            C_Gauss[j+1,0] = C_Gauss[j,-1]
+        # New value
         C_Gauss[j+1,i] = C_Gauss[j,i] * (1-Co) + Co * C_Gauss[j,i-1]
+        
 
-## Analytical solution
+## Analytical solution (here, periodic domain is not used)
 for j in range(0,N-1):
     for i in range(len(x)):
         # Square impuls
@@ -82,7 +94,6 @@ def animate(i):
     plt.ylabel("Wave amplitude")
     x_plot = x
     y_plot = C_SqP[i,:]
-    y_plot_exact = C_SqP_exact[i,:]
     line.set_data(x_plot, y_plot)
     return line,
 
